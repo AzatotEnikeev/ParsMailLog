@@ -9,9 +9,6 @@ COL_LOG_ADDRESS = 4  # email адрес
 COL_LOG_ANOTHER_INFO = 5 # другая информация
 COL_LOG_END = 6
 
-
-
-
 # вохможные значения столбца FLAG
 FLAG_TYPE_DELIVERY_ARRIVAL = '<='  # прибытие сообщения (в этом случае за флагом следует адрес отправителя)
 FLAG_TYPE_DELIVERY_NORMAL = '=>'  # нормальная доставка сообщения

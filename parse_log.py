@@ -21,7 +21,7 @@ def parse_log_file(file_name: str):
                 mail_log.id_self = details[COL_LOG_KEY_ID]
                 mail_log.mail_adress = details[COL_LOG_ADDRESS]
                 mail_log.another_information = " ".join(details[COL_LOG_ANOTHER_INFO:])
-                mail_log.id =  re.findall(r'id=(\S+)',line)
+                mail_log.id = re.findall(r'id=(\S+)',line)
             else:
                 continue
 
@@ -54,5 +54,6 @@ def parse_log_file(file_name: str):
 
 if __name__ == "__main__":
     result = parse_log_file('out')
-    database.set_values_from_mail_log(result)
+    print(result)
+    # database.set_values_from_mail_log(result)
     test = 'ffff'
