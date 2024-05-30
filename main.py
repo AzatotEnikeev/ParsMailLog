@@ -1,5 +1,7 @@
 import json
 import maillogclass
+import database
+import const
 
 def parse_log_file(file_name: str, order: list):
     data = []
@@ -9,27 +11,27 @@ def parse_log_file(file_name: str, order: list):
         details = [x.rstrip() for x in details]
         new_record = maillogclass.MailLogClassInfo()
 
-        if details[3] in ['<=', '=>', '->', '**', '==']:
+        if details[const.ROW_LOG_FLAG] in ['<=', '=>', '->', '**', '==']:
 
-            if len(details) > 4 and details[4] == ":blackhole:":
-                new_record.date = details[0]
-                new_record.time = details[1]
-                new_record.flag = details[2]
-                new_record.id_self = details[3]
-                new_record.mail_adress = details[4] + details[5]
-                new_record.another_information = details[6:-1]
+            if len(details) >= 4 and details[const.ROW_LOG_ADDRESS] == ":blackhole:":
+                new_record.date = details[const.ROW_LOG_DATE]
+                new_record.time = details[const.ROW_LOG_TIME]
+                new_record.flag = details[const.ROW_LOG_FLAG]
+                new_record.id_self = details[const.ROW_LOG_KEY_ID]
+                new_record.mail_adress = details[const.ROW_LOG_ADDRESS] + details[const.ROW_LOG_ANOTHER_INFO]
+                new_record.another_information = details[const.ROW_LOG_END:]
             else:
-                new_record.date = details[0]
-                new_record.time = details[1]
-                new_record.flag = details[2]
-                new_record.id_self = details[3]
-                new_record.mail_adress = details[4]
-                new_record.another_information = details[5:-1]
+                new_record.date = details[const.ROW_LOG_DATE]
+                new_record.time = details[const.ROW_LOG_TIME]
+                new_record.flag = details[const.ROW_LOG_FLAG]
+                new_record.id_self = details[const.ROW_LOG_KEY_ID]
+                new_record.mail_adress = details[const.ROW_LOG_ADDRESS]
+                new_record.another_information = details[const.ROW_LOG_ANOTHER_INFO:]
         else:
-            new_record.date = details[0]
-            new_record.time = details[1]
-            new_record.id_self = details[3]
-            new_record.another_information = details[4:-1]
+            new_record.date = details[const.ROW_LOG_DATE]
+            new_record.time = details[const.ROW_LOG_TIME]
+            new_record.id_self = details[const.ROW_LOG_KEY_ID]
+            new_record.another_information = details[const.ROW_LOG_FLAG :]
 
         data.append(new_record)
     file.close()
@@ -38,4 +40,5 @@ def parse_log_file(file_name: str, order: list):
 
 if __name__ == "__main__":
     result = parse_log_file('out', order = ["date", "time", "id", "flag", "email", "another information"])
+    database.set_values_from_mail_log(result)
     test = 'ffff'
