@@ -57,12 +57,23 @@ def set_values_from_mail_log(current_session, list_of_mail_log: List[MailLogClas
 def select_values_from_tables(current_session, name_address: str):
     name_address = f"'{name_address}'"
     query = text(
-        "select * from (select created, str  from log where log.int_id in"
+        "select created, str, int_id from (select created, str, int_id  from log where log.int_id in"
         " (Select distinct(int_id) from log l where l.address = "
         + name_address
         + ")) t1"
         " union all "
-        "select * from (select created, str from message where  message.int_id in (Select distinct(int_id) "
-        "from log l where l.address =" + name_address + ") ) t2"
+        "select created, str, int_id from (select created, str, int_id from message where  "
+        "message.int_id in (Select distinct(int_id) "
+        "from log l where l.address =" + name_address + ") ) t2 order by created, int_id"
     )
-    return current_session.execute(query).all()
+    result_from_select = current_session.execute(query).all()
+    result_after_format = format_result(result_from_select)
+    return result_after_format
+
+
+def format_result(result: list):
+    new_result = []
+    for record in result:
+        date_to_tsr = record[0]
+        new_result.append({'time': str(date_to_tsr), 'text': record[1]})
+    return new_result
