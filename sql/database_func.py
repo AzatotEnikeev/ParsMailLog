@@ -63,7 +63,9 @@ def select_values_from_tables(current_session, name_address: str):
         "select * from (select created, str from message where  message.int_id in (Select distinct(int_id) "
         "from log l where l.address =" + name_address + ") ) t2"
     )
-    return current_session.execute(query)
+    return current_session.execute(query).all()
+
+
 
 
 
