@@ -1,11 +1,6 @@
-from sqlalchemy import (
-    Boolean,
-    Column,
-    DateTime,
-    String,
-    func,
-)
-from database import Base
+from sqlalchemy import Boolean, Column, DateTime, String, func
+
+from sql.database import Base
 
 
 class Message(Base):
@@ -25,4 +20,3 @@ class Log(Base):
     int_id = Column(String(16))
     str = Column(String)
     address = Column(String)
-

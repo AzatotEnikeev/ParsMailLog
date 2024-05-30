@@ -1,5 +1,3 @@
-from enum import Enum, IntEnum, auto
-
 LOG_SEPARATOR = " "
 
 # описание номера столбцов лог-файла

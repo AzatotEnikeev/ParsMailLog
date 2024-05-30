@@ -1,13 +1,15 @@
 import datetime
-from sqlalchemy import (
-    text,
-)
+
+from sqlalchemy import text
 from sqlalchemy.orm import session
-from sql.models import Message, Log
+
 from backend.mail_log_class import MailLogClassInfo
+from sql.models import Log, Message
 
 
-def add_into_message(created: datetime, id: str, int_id: str, str_log: str, status: bool):
+def add_into_message(
+    created: datetime, id: str, int_id: str, str_log: str, status: bool
+):
     session.add(
         Message(created=created, id=id, int_id=int_id, str=str_log, status=status)
     )  # поиск и обновление значений
@@ -19,6 +21,7 @@ def add_into_log(created: datetime, int_id: str, str_log: str, address: str):
         Log(created=created, int_id=int_id, str=str_log, address=address)
     )  # поиск и обновление значений
     session.commit()
+
 
 def format_to_datetime(date_string, format="%Y-%m-%d %H:%M:%S"):
     return datetime.datetime.strptime(date_string, format)
