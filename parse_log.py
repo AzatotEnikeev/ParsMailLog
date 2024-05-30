@@ -1,9 +1,11 @@
 from mail_log_class import MailLogClassInfo
 import database
-from constants import COL_LOG_DATE, COL_LOG_TIME, COL_LOG_KEY_ID, COL_LOG_FLAG, COL_LOG_ADDRESS, COL_LOG_ANOTHER_INFO, COL_LOG_END
+from constants import COL_LOG_DATE, COL_LOG_TIME, COL_LOG_KEY_ID, COL_LOG_FLAG, COL_LOG_ADDRESS, COL_LOG_ANOTHER_INFO,\
+    COL_LOG_END, NOT_ARRIVAL_ARRAY_OF_FLAG_TYPE, MIN_COLS_IF_NOT_ARRIVAL, BLACKHOLE_STR, FLAG_TYPE_DELIVERY_ARRIVAL
 import re
 
-def parse_log_file(file_name: str, order: list):
+
+def parse_log_file(file_name: str):
     data = []
     file = open(file_name, 'r')
     for line in file.readlines():
@@ -11,7 +13,7 @@ def parse_log_file(file_name: str, order: list):
         details = [x.rstrip() for x in details_line]
         mail_log = MailLogClassInfo()
 
-        if details[COL_LOG_FLAG] == '<=':
+        if details[COL_LOG_FLAG] == FLAG_TYPE_DELIVERY_ARRIVAL:
             if re.findall(r'id=\w*',line):
                 mail_log.date = details[COL_LOG_DATE]
                 mail_log.time = details[COL_LOG_TIME]
@@ -23,9 +25,9 @@ def parse_log_file(file_name: str, order: list):
             else:
                 continue
 
-        elif details[COL_LOG_FLAG] in ['=>', '->', '**', '==']:
+        elif details[COL_LOG_FLAG] in NOT_ARRIVAL_ARRAY_OF_FLAG_TYPE:
 
-            if len(details) >= 4 and details[COL_LOG_ADDRESS] == ":blackhole:":
+            if len(details) >= MIN_COLS_IF_NOT_ARRIVAL and details[COL_LOG_ADDRESS] == BLACKHOLE_STR:
                 mail_log.date = details[COL_LOG_DATE]
                 mail_log.time = details[COL_LOG_TIME]
                 mail_log.flag = details[COL_LOG_FLAG]
@@ -51,6 +53,6 @@ def parse_log_file(file_name: str, order: list):
 
 
 if __name__ == "__main__":
-    result = parse_log_file('out', order = ["date", "time", "id", "flag", "email", "another information"])
-    # database.set_values_from_mail_log(result)
+    result = parse_log_file('out')
+    database.set_values_from_mail_log(result)
     test = 'ffff'
