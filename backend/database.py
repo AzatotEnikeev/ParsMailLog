@@ -10,15 +10,11 @@ from sqlalchemy import (
     String,
     create_engine,
     func,
-    select,
     text,
-    update,
 )
 from sqlalchemy.orm import declarative_base, session, sessionmaker
 
-import constants
-import mail_log_class
-from mail_log_class import MailLogClassInfo
+from backend.mail_log_class import MailLogClassInfo
 
 DB_HOST = "localhost"
 DB_PORT = 5432

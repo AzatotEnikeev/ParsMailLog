@@ -1,7 +1,6 @@
 import re
 
-import database
-from constants import (
+from backend.constants import (
     BLACKHOLE_STR,
     COL_LOG_ADDRESS,
     COL_LOG_ANOTHER_INFO,
@@ -15,10 +14,15 @@ from constants import (
     MIN_COLS_IF_NOT_ARRIVAL,
     NOT_ARRIVAL_ARRAY_OF_FLAG_TYPE,
 )
-from mail_log_class import MailLogClassInfo
+from backend.mail_log_class import MailLogClassInfo
 
 
-def parse_log_file(file_name: str):
+def parse_log_file(file_name: str) -> list(MailLogClassInfo):
+    """
+    Функция для чтения mail loga и выделения общей информации по логу
+    :param file_name: имя файла лога
+    :return: list(MailLogClassInfo) - лист из структур с информацией по логу
+    """
     log_result = []
     file = open(file_name, "r")
     for line in file.readlines():
@@ -99,7 +103,7 @@ def convert_str_to_mail_log_class_from_without_flag(
 
 
 if __name__ == "__main__":
-    result = parse_log_file("out")
+    result = parse_log_file("../data/out")
     print(result)
     # database.set_values_from_mail_log(result)
     test = "ffff"
