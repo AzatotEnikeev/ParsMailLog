@@ -2,16 +2,29 @@ import json
 import maillogclass
 import database
 import const
+import re
 
 def parse_log_file(file_name: str, order: list):
     data = []
     file = open(file_name, 'r')
     for line in file.readlines():
-        details = line.split(" ")
-        details = [x.rstrip() for x in details]
+        details_line = line.split(" ")
+        details = [x.rstrip() for x in details_line]
         new_record = maillogclass.MailLogClassInfo()
 
-        if details[const.ROW_LOG_FLAG] in ['<=', '=>', '->', '**', '==']:
+        if details[const.ROW_LOG_FLAG] == '<=':
+            if re.findall(r'id=\w*',line):
+                new_record.date = details[const.ROW_LOG_DATE]
+                new_record.time = details[const.ROW_LOG_TIME]
+                new_record.flag = details[const.ROW_LOG_FLAG]
+                new_record.id_self = details[const.ROW_LOG_KEY_ID]
+                new_record.mail_adress = details[const.ROW_LOG_ADDRESS]
+                new_record.another_information = " ".join(details[const.ROW_LOG_ANOTHER_INFO:])
+                new_record.id =  re.findall(r'id=(\S+)',line)
+            else:
+                continue
+
+        elif details[const.ROW_LOG_FLAG] in ['=>', '->', '**', '==']:
 
             if len(details) >= 4 and details[const.ROW_LOG_ADDRESS] == ":blackhole:":
                 new_record.date = details[const.ROW_LOG_DATE]
@@ -19,19 +32,19 @@ def parse_log_file(file_name: str, order: list):
                 new_record.flag = details[const.ROW_LOG_FLAG]
                 new_record.id_self = details[const.ROW_LOG_KEY_ID]
                 new_record.mail_adress = details[const.ROW_LOG_ADDRESS] + details[const.ROW_LOG_ANOTHER_INFO]
-                new_record.another_information = details[const.ROW_LOG_END:]
+                new_record.another_information = " ".join(details[const.ROW_LOG_END:])
             else:
                 new_record.date = details[const.ROW_LOG_DATE]
                 new_record.time = details[const.ROW_LOG_TIME]
                 new_record.flag = details[const.ROW_LOG_FLAG]
                 new_record.id_self = details[const.ROW_LOG_KEY_ID]
                 new_record.mail_adress = details[const.ROW_LOG_ADDRESS]
-                new_record.another_information = details[const.ROW_LOG_ANOTHER_INFO:]
+                new_record.another_information = " ".join(details[const.ROW_LOG_ANOTHER_INFO:])
         else:
             new_record.date = details[const.ROW_LOG_DATE]
             new_record.time = details[const.ROW_LOG_TIME]
             new_record.id_self = details[const.ROW_LOG_KEY_ID]
-            new_record.another_information = details[const.ROW_LOG_FLAG :]
+            new_record.another_information = " ".join(details[const.ROW_LOG_FLAG :])
 
         data.append(new_record)
     file.close()

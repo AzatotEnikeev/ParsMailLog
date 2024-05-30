@@ -19,7 +19,7 @@ class MailLogClassInfo:
     flag: str = None
     mail_adress: str = None
     another_information: str = None
-
+    id : str = None
 
 def add_log_info(log_str : str):
     return 0
