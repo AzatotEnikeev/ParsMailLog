@@ -11,9 +11,9 @@ from constants import (
     COL_LOG_KEY_ID,
     COL_LOG_TIME,
     FLAG_TYPE_DELIVERY_ARRIVAL,
+    LOG_SEPARATOR,
     MIN_COLS_IF_NOT_ARRIVAL,
     NOT_ARRIVAL_ARRAY_OF_FLAG_TYPE,
-    LOG_SEPARATOR
 )
 from mail_log_class import MailLogClassInfo
 
@@ -23,7 +23,7 @@ def parse_log_file(file_name: str):
     file = open(file_name, "r")
     for line in file.readlines():
         details_line = line.split(LOG_SEPARATOR)  # разделяем строку по сепаратору
-        details = [x.rstrip('\n') for x in details_line]  # убираем символ каретки
+        details = [x.rstrip("\n") for x in details_line]  # убираем символ каретки
 
         if details[COL_LOG_FLAG] == FLAG_TYPE_DELIVERY_ARRIVAL:
             # обработка случая если сообщение - ПРИБЫТИЕ
@@ -37,14 +37,18 @@ def parse_log_file(file_name: str):
             # обработка случая когда в строке нет ФЛАГА
             mail_log = convert_str_to_mail_log_class_from_without_flag(details)
 
-        if mail_log is not None: # убираем случаи, когда mail_log не определился (когда нет id и ПРИБЫТИЕ)
+        if (
+            mail_log is not None
+        ):  # убираем случаи, когда mail_log не определился (когда нет id и ПРИБЫТИЕ)
             log_result.append(mail_log)
 
     file.close()
     return log_result
 
 
-def convert_str_to_mail_log_class_from_delivery(line: str, details: list[str]) -> MailLogClassInfo:
+def convert_str_to_mail_log_class_from_delivery(
+    line: str, details: list[str]
+) -> MailLogClassInfo:
     mail_log = None
     if re.findall(r"id=\w*", line):  # проверяем что в строке лога есть id
         mail_log = MailLogClassInfo()
@@ -59,19 +63,19 @@ def convert_str_to_mail_log_class_from_delivery(line: str, details: list[str]) -
     return mail_log
 
 
-def convert_str_to_mail_log_class_from_not_delivery(details: list[str]) -> MailLogClassInfo:
+def convert_str_to_mail_log_class_from_not_delivery(
+    details: list[str],
+) -> MailLogClassInfo:
     mail_log = MailLogClassInfo()
     if (
-            len(details) >= MIN_COLS_IF_NOT_ARRIVAL
-            and details[COL_LOG_ADDRESS] == BLACKHOLE_STR
+        len(details) >= MIN_COLS_IF_NOT_ARRIVAL
+        and details[COL_LOG_ADDRESS] == BLACKHOLE_STR
     ):
         mail_log.date = details[COL_LOG_DATE]
         mail_log.time = details[COL_LOG_TIME]
         mail_log.flag = details[COL_LOG_FLAG]
         mail_log.id_self = details[COL_LOG_KEY_ID]
-        mail_log.mail_adress = (
-                details[COL_LOG_ADDRESS] + details[COL_LOG_ANOTHER_INFO]
-        )
+        mail_log.mail_adress = details[COL_LOG_ADDRESS] + details[COL_LOG_ANOTHER_INFO]
         mail_log.another_information = " ".join(details[COL_LOG_END:])
     else:
         mail_log.date = details[COL_LOG_DATE]
@@ -83,7 +87,9 @@ def convert_str_to_mail_log_class_from_not_delivery(details: list[str]) -> MailL
     return mail_log
 
 
-def convert_str_to_mail_log_class_from_without_flag(details: list[str]) -> MailLogClassInfo:
+def convert_str_to_mail_log_class_from_without_flag(
+    details: list[str],
+) -> MailLogClassInfo:
     mail_log = MailLogClassInfo()
     mail_log.date = details[COL_LOG_DATE]
     mail_log.time = details[COL_LOG_TIME]
