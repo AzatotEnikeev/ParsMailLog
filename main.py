@@ -1,14 +1,14 @@
-from fastapi import FastAPI, Request, Header, Depends
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
 from typing import Annotated
 
+from fastapi import Depends, FastAPI, Header, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
-from sql.database import Session, engine
 import sql.models as models
-from sql.database_func import select_values_from_tables, set_values_from_mail_log
 from backend.parse_log import parse_log_file
+from sql.database import Session, engine
+from sql.database_func import select_values_from_tables, set_values_from_mail_log
 
 # models.Base.metadata.create_all(bind=engine)
 
@@ -40,9 +40,9 @@ async def index(
     #
     # records = db.query(models.Film).offset(offset).limit(COUNT_ROWS)
     records = [
-        {'time': '10-11-2023', 'text': 'example1'},
-        {'time': '11-11-2023', 'text': 'example2'},
-        {'time': '12-11-2023', 'text': 'example3'},
+        {"time": "10-11-2023", "text": "example1"},
+        {"time": "11-11-2023", "text": "example2"},
+        {"time": "12-11-2023", "text": "example3"},
     ]
     page = 1
     context = {"request": request, "records": records, "page": page}
@@ -63,9 +63,9 @@ if __name__ == "__main__":
     print("select_values_from_tables")
     """
 
-    result_from_select = select_values_from_tables(current_session, "kuxanwyqalsszn@gmail.com")
+    result_from_select = select_values_from_tables(
+        current_session, "kuxanwyqalsszn@gmail.com"
+    )
     for row in result_from_select:
         row_as_dict = row._mapping
         print(row_as_dict)
-
-

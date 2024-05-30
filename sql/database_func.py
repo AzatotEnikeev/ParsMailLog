@@ -1,11 +1,11 @@
 import datetime
+from typing import List
 
 from sqlalchemy import text
 from sqlalchemy.orm import session
 
 from backend.mail_log_class import MailLogClassInfo
 from sql.models import Log, Message
-from typing import List
 
 
 def add_into_message(
@@ -17,7 +17,9 @@ def add_into_message(
     current_session.commit()
 
 
-def add_into_log(current_session, created: datetime, int_id: str, str_log: str, address: str):
+def add_into_log(
+    current_session, created: datetime, int_id: str, str_log: str, address: str
+):
     current_session.add(
         Log(created=created, int_id=int_id, str=str_log, address=address)
     )  # поиск и обновление значений
@@ -64,8 +66,3 @@ def select_values_from_tables(current_session, name_address: str):
         "from log l where l.address =" + name_address + ") ) t2"
     )
     return current_session.execute(query).all()
-
-
-
-
-

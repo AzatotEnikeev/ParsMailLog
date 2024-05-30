@@ -1,4 +1,5 @@
 import re
+from typing import List
 
 from backend.constants import (
     BLACKHOLE_STR,
@@ -15,7 +16,6 @@ from backend.constants import (
     NOT_ARRIVAL_ARRAY_OF_FLAG_TYPE,
 )
 from backend.mail_log_class import MailLogClassInfo
-from typing import List
 
 
 def parse_log_file(file_name: str) -> List[MailLogClassInfo]:
