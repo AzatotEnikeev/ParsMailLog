@@ -1,0 +1,10 @@
+from enum import auto, IntEnum, Enum
+
+
+COL_LOG_DATE = 0
+COL_LOG_TIME = 1
+COL_LOG_KEY_ID = 2
+COL_LOG_FLAG = 3
+COL_LOG_ADDRESS = 4
+COL_LOG_ANOTHER_INFO = 5
+COL_LOG_END = 6

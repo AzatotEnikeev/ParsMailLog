@@ -1,11 +1,11 @@
 #from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 #from sqlalchemy.orm import DeclarativeBase, sessionmaker
 import datetime
-import maillogclass
+import mail_log_class
 from sqlalchemy import  create_engine, Column, Integer, String, select, update, DateTime, Boolean, func,text
 from sqlalchemy.orm import declarative_base, session, sessionmaker
-import const
-from maillogclass import MailLogClassInfo
+import constants
+from mail_log_class import MailLogClassInfo
 
 DB_HOST = "localhost"
 DB_PORT = 5432
