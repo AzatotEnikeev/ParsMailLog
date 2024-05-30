@@ -31,29 +31,25 @@ async def index(
     request: Request,
     hx_request: Annotated[str | None, Header()] = None,
     db: Session = Depends(get_db),
+    email: str = 'default',
 ):
-    print("it's working")
+    print(f'its working, email = {email}')
 
-    records = select_values_from_tables(
-        db, "kuxanwyqalsszn@gmail.com"
-    )
+    if email != 'default':
+        records = select_values_from_tables(
+            db, email
+        )
+        context = {"request": request, "records": records}
+        if hx_request:
+            return templates.TemplateResponse("table.html", context)
+    records=[]
     context = {"request": request, "records": records}
-    if hx_request:
-        return templates.TemplateResponse("table.html", context)
     return templates.TemplateResponse(name="index.html", context=context)
 
 
 if __name__ == "__main__":
     print("create session")
     current_session = Session()
-    """
-    
-    print("parse file")
-    result_from_log = parse_log_file("data/out")
-    print("into base")
-    set_values_from_mail_log(current_session, result_from_log )
-    print("select_values_from_tables")
-    """
 
     result_from_select = select_values_from_tables(
         current_session, "kuxanwyqalsszn@gmail.com"

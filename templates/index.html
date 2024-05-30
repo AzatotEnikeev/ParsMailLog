@@ -16,15 +16,14 @@
 
     <p class="text-2xl font-bold mb-4">Отобразить данные</p>
 
-    <tr>
-        <td colspan="2">
+        <form name="find_form">
             <button class="px-3 py-1 bg-blue-600 text-white ml-4"
-                    hx-get="/index/"
-                    hx-target="closest tr"
-                    hx-swap="outerHTML">Load More</button>
+                    hx-get="/index?email=kuxanwyqalsszn@gmail.com"
+                    hx-target="#table-body"
+                    hx-swap="beforeend">Load More</button>
             </button>
-        </td>
-    </tr>
+            Enter email: <input name="email" type="email" />
+        </form>
 
         <table class="min-w-[50%] mb-4">
             <thead class="border-b text-lg">
@@ -38,6 +37,8 @@
 
               </tbody>
         </table>
+
+
 
 </div>
 
