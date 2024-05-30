@@ -1,5 +1,7 @@
 from enum import Enum, IntEnum, auto
 
+LOG_SEPARATOR = " "
+
 # описание номера столбцов лог-файла
 COL_LOG_DATE = 0  # дата
 COL_LOG_TIME = 1  # время
@@ -9,7 +11,7 @@ COL_LOG_ADDRESS = 4  # email адрес
 COL_LOG_ANOTHER_INFO = 5  # другая информация
 COL_LOG_END = 6
 
-# вохможные значения столбца FLAG
+# возможные значения столбца FLAG
 FLAG_TYPE_DELIVERY_ARRIVAL = (
     "<="  # прибытие сообщения (в этом случае за флагом следует адрес отправителя)
 )
