@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Task Parse mail log</title>
+    <script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body>
+
+<div class="mx-4">
+
+    <p class="text-2xl font-bold mb-4">Отобразить данные</p>
+
+    <tr>
+        <td colspan="2">
+            <button class="px-3 py-1 bg-blue-600 text-white ml-4"
+                    hx-get="/index?page={{ page + 1}}"
+                    hx-target="closest tr"
+                    hx-swap="outerHTML">Load More</button>
+            </button>
+        </td>
+    </tr>
+
+        <table class="min-w-[50%] mb-4">
+            <thead class="border-b text-lg">
+                <tr>
+                  <th class="border">Время</th>
+                  <th class="border">Строка лога</th>
+                </tr>
+              </thead>
+              <tbody class="text-center text-sm" id="table-body">
+                {%include 'table.html' %}
+
+              </tbody>
+        </table>
+
+</div>
+
+</body>
+</html>
