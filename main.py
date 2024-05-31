@@ -47,6 +47,11 @@ async def index(
     return templates.TemplateResponse(name="index.html", context=context)
 
 
+@app.get('/disable')
+def disable_mail(mail_name: str):
+    return f'{mail_name} Введенное значение'
+
+
 if __name__ == "__main__":
     print("create session")
     current_session = Session()

@@ -25,6 +25,14 @@
             Enter email: <input name="email" type="email" />
         </form>
 
+        <h1>Disable a category</h1>
+        <form method="get" id="myForm" action='/disable{{ mail_name }}'>
+            <label for="mail_name">Enter a category name to disable:</label><br>
+            <input type="text" id="mail_name" name="mail_name">
+            <input class="submit" type="submit" value="Отправить">
+        </form>
+
+
         <table class="min-w-[50%] mb-4">
             <thead class="border-b text-lg">
                 <tr>
