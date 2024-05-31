@@ -1,11 +1,11 @@
 import datetime
 from typing import List
 
-from database import Session
 from sqlalchemy import exc, text
 
 from backend.constants import COL_SHOW_TEXT, COL_SHOW_TIME, DATETIME_FORMAT
 from backend.mail_log_class import MailLogClassInfo
+from sql.database import Session
 from sql.models import Log, Message
 
 

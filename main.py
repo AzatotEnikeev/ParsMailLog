@@ -26,6 +26,17 @@ def get_db():
         db.close()
 
 
+@app.on_event("startup")
+def startup_populate_db():
+    print("startup begin")
+
+    current_session = Session()
+    result_of_parse = parse_log_file("data/out")
+    set_values_from_mail_log(current_session, result_of_parse)
+
+    print("startup end")
+
+
 @app.get("/index/", response_class=HTMLResponse)
 async def index(
     request: Request,
@@ -43,18 +54,3 @@ async def index(
     records = []
     context = {"request": request, "records": records}
     return templates.TemplateResponse(name="index.html", context=context)
-
-
-if __name__ == "__main__":
-    print("create session")
-    current_session = Session()
-
-    result_from_select = select_values_from_tables(
-        current_session, "kuxanwyqalsszn@gmail.com"
-    )
-    print(result_from_select)
-    """
-    for row in result_from_select:
-        row_as_dict = row._mapping
-        print(row_as_dict)
-    """
