@@ -39,17 +39,6 @@ def get_db():
         db.close()
 
 
-@app.on_event("startup")
-def startup_populate_db():
-    print("startup begin")
-
-    current_session = Session()
-    result_of_parse = parse_log_file("data/out")
-    set_values_from_mail_log(current_session, result_of_parse)
-
-    print("startup end")
-
-
 @app.get("/index/", response_class=HTMLResponse)
 async def index(
     request: Request,
@@ -59,19 +48,27 @@ async def index(
 ):
     if mail_name != "default":
         records = select_values_from_tables(db, mail_name)
+
+        # проверяем укладываемся ли в количество записей
         if not is_constrain_length_for_records(records):
+            # если нет, генерируем текст сообщения
             records = [{COL_SHOW_TIME: f'Количество записей больше ограничения {MAX_COUNT_LENGTH_RECORDS}',
                        COL_SHOW_TEXT: ''}]
-            print(records)
 
         context = {"request": request, "records": records}
         if hx_request:
             return templates.TemplateResponse("table.html", context)
 
-
-
-
-
     records = []
     context = {"request": request, "records": records}
     return templates.TemplateResponse(name="index.html", context=context)
+
+
+if __name__ == '__main__':
+    current_session = Session()
+    print('Загружаем лог из файла')
+    result_of_parse = parse_log_file("data/out")
+    print('Сохраняем в базу')
+    set_values_from_mail_log(current_session, result_of_parse)
+    current_session.close()
+
