@@ -34,3 +34,10 @@ DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 # Название столбцов, которые выводим на форме
 COL_SHOW_TIME = "time"
 COL_SHOW_TEXT = "text"
+
+#Настройка соединения к базе
+DB_HOST = "localhost"
+DB_PORT = 5432
+DB_USER = "postgres"
+DB_PASS = "12363"
+DB_NAME = "ParseMailBase"
