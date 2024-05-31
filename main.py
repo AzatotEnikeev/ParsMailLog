@@ -5,8 +5,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
-from backend.parse_log import parse_log_file
 from backend.constants import COL_SHOW_TEXT, COL_SHOW_TIME
+from backend.parse_log import parse_log_file
 from sql.database import Session
 from sql.database_func import select_values_from_tables, set_values_from_mail_log
 
@@ -52,8 +52,12 @@ async def index(
         # проверяем укладываемся ли в количество записей
         if not is_constrain_length_for_records(records):
             # если нет, генерируем текст сообщения
-            records = [{COL_SHOW_TIME: f'Количество записей больше ограничения {MAX_COUNT_LENGTH_RECORDS}',
-                       COL_SHOW_TEXT: ''}]
+            records = [
+                {
+                    COL_SHOW_TIME: f"Количество записей больше ограничения {MAX_COUNT_LENGTH_RECORDS}",
+                    COL_SHOW_TEXT: "",
+                }
+            ]
 
         context = {"request": request, "records": records}
         if hx_request:
@@ -64,11 +68,10 @@ async def index(
     return templates.TemplateResponse(name="index.html", context=context)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     current_session = Session()
-    print('Загружаем лог из файла')
+    print("Загружаем лог из файла")
     result_of_parse = parse_log_file("data/out")
-    print('Сохраняем в базу')
+    print("Сохраняем в базу")
     set_values_from_mail_log(current_session, result_of_parse)
     current_session.close()
-

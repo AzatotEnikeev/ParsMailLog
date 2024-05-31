@@ -35,7 +35,7 @@ DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 COL_SHOW_TIME = "time"
 COL_SHOW_TEXT = "text"
 
-#Настройка соединения к базе
+# Настройка соединения к базе
 DB_HOST = "localhost"
 DB_PORT = 5432
 DB_USER = "postgres"
