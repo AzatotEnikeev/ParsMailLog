@@ -16,18 +16,11 @@
 
     <p class="text-2xl font-bold mb-4">Отобразить данные</p>
 
-        <form name="find_form">
-            <button class="px-3 py-1 bg-blue-600 text-white ml-4"
-                    hx-get="/index?email=kuxanwyqalsszn@gmail.com"
-                    hx-target="#table-body"
-                    hx-swap="beforeend">Load More</button>
-            </button>
-            Enter email: <input name="email" type="email" />
-        </form>
 
-        <h1>Disable a category</h1>
-        <form method="get" id="myForm" action='/disable{{ mail_name }}'>
-            <label for="mail_name">Enter a category name to disable:</label><br>
+        <form id="myForm" hx-get='/index{{ mail_name }}'
+              hx-target="#table-body"
+              hx-swap="innerHTML">
+            <label for="mail_name">Введите название для поиска:</label><br>
             <input type="text" id="mail_name" name="mail_name">
             <input class="submit" type="submit" value="Отправить">
         </form>

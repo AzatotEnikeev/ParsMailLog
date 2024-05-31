@@ -31,13 +31,13 @@ async def index(
     request: Request,
     hx_request: Annotated[str | None, Header()] = None,
     db: Session = Depends(get_db),
-    email: str = 'default',
+    mail_name: str = 'default',
 ):
-    print(f'its working, email = {email}')
+    print(f'its working, email = {mail_name}')
 
-    if email != 'default':
+    if mail_name != 'default':
         records = select_values_from_tables(
-            db, email
+            db, mail_name
         )
         context = {"request": request, "records": records}
         if hx_request:
