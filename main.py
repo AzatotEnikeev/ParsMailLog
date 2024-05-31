@@ -31,25 +31,18 @@ async def index(
     request: Request,
     hx_request: Annotated[str | None, Header()] = None,
     db: Session = Depends(get_db),
-    mail_name: str = 'default',
+    mail_name: str = "default",
 ):
-    print(f'its working, email = {mail_name}')
+    print(f"its working, email = {mail_name}")
 
-    if mail_name != 'default':
-        records = select_values_from_tables(
-            db, mail_name
-        )
+    if mail_name != "default":
+        records = select_values_from_tables(db, mail_name)
         context = {"request": request, "records": records}
         if hx_request:
             return templates.TemplateResponse("table.html", context)
-    records=[]
+    records = []
     context = {"request": request, "records": records}
     return templates.TemplateResponse(name="index.html", context=context)
-
-
-@app.get('/disable')
-def disable_mail(mail_name: str):
-    return f'{mail_name} Введенное значение'
 
 
 if __name__ == "__main__":
