@@ -5,9 +5,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
-import sql.models as models
 from backend.parse_log import parse_log_file
-from sql.database import Session, engine
+from sql.database import Session
 from sql.database_func import select_values_from_tables, set_values_from_mail_log
 
 # models.Base.metadata.create_all(bind=engine)
@@ -44,8 +43,6 @@ async def index(
     db: Session = Depends(get_db),
     mail_name: str = "default",
 ):
-    print(f"its working, email = {mail_name}")
-
     if mail_name != "default":
         records = select_values_from_tables(db, mail_name)
         context = {"request": request, "records": records}
