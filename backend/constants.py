@@ -27,3 +27,10 @@ NOT_ARRIVAL_ARRAY_OF_FLAG_TYPE = (
 )
 MIN_COLS_IF_NOT_ARRIVAL = 4  # ограничение по размеры, если нет ПРИБЫТИЕ сообщения
 BLACKHOLE_STR = ":blackhole:"  # случай, когда вместо адреса тэг blackhole
+
+#Формат для отображения типа datetime
+DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+
+#Название столбцов, которые выводим на форме
+COL_SHOW_TIME = "time"
+COL_SHOW_TEXT = "text"

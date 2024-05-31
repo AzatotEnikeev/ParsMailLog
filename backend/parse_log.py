@@ -107,4 +107,4 @@ if __name__ == "__main__":
     result = parse_log_file("../data/out")
     print(result)
     # database.set_values_from_mail_log(result)
-    test = "ffff"
+

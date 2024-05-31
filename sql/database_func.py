@@ -1,7 +1,7 @@
 import datetime
 from typing import List
-
-from sqlalchemy import text
+from backend.constants import DATETIME_FORMAT, COL_SHOW_TIME, COL_SHOW_TEXT
+from sqlalchemy import text, exc
 from sqlalchemy.orm import session
 
 from backend.mail_log_class import MailLogClassInfo
@@ -11,27 +11,58 @@ from sql.models import Log, Message
 def add_into_message(
     current_session, created: datetime, id: str, int_id: str, str_log: str, status: bool
 ):
-    current_session.add(
-        Message(created=created, id=id, int_id=int_id, str=str_log, status=status)
-    )  # поиск и обновление значений
-    current_session.commit()
+    """
+    Добавления записи в таблицу message
+    :param current_session: текущая сессия с базой
+    :param created: дата + время создания
+    :param id: id для сообщения типа ПРИБЫТИЕ
+    :param int_id: внутренний id сообщения
+    :param str_log: строка лога
+    :param status: не описано по заданию, передаю False
+    """
+    try:
+        with current_session.begin():
+            current_session.add(
+            Message(created=created, id=id, int_id=int_id, str=str_log, status=status)
+            ) # добавление значений
+            current_session.commit()
+    except exc.DatabaseError as error:
+        print(type(error))
+        print(error)
 
 
 def add_into_log(
     current_session, created: datetime, int_id: str, str_log: str, address: str
 ):
-    current_session.add(
-        Log(created=created, int_id=int_id, str=str_log, address=address)
-    )  # поиск и обновление значений
-    current_session.commit()
+    """
+     Добавления записи в таблицу log
+    :param current_session: текущая сессия с базой
+    :param created: дата + время создания
+    :param int_id: внутренний id сообщения
+    :param str_log: строка лога
+    :param address: адресс отправителя/получателя
+    """
+    try:
+        with current_session.begin():
+            current_session.add(
+            Log(created=created, int_id=int_id, str=str_log, address=address)
+            )  # добавление значений
+            current_session.commit()
+    except exc.DatabaseError as error:
+        print(type(error))
+        print(error)
 
-
-def format_to_datetime(date_string, format="%Y-%m-%d %H:%M:%S"):
+def format_to_datetime(date_string, format=DATETIME_FORMAT):
     return datetime.datetime.strptime(date_string, format)
 
 
 def set_values_from_mail_log(current_session, list_of_mail_log: List[MailLogClassInfo]):
+    """
 
+    :param current_session:
+    :param list_of_mail_log:
+    :return:
+    """
     for value in list_of_mail_log:
         if value.id:
             date_string = format_to_datetime(value.date + " " + value.time)
@@ -54,7 +85,12 @@ def set_values_from_mail_log(current_session, list_of_mail_log: List[MailLogClas
             )
 
 
-def select_values_from_tables(current_session, name_address: str):
+def select_values_from_tables(current_session, name_address: str) -> List:
+    """
+    :param current_session: текущая сессия с базой
+    :param name_address: имя адреса получателя
+    :return:
+    """
     name_address = f"'{name_address}'"
     query = text(
         "select created, str, int_id from (select created, str, int_id  from log where log.int_id in"
@@ -75,5 +111,5 @@ def format_result(result: list):
     new_result = []
     for record in result:
         date_to_tsr = record[0]
-        new_result.append({'time': str(date_to_tsr), 'text': record[1]})
+        new_result.append({COL_SHOW_TIME: str(date_to_tsr), COL_SHOW_TEXT: record[1]})
     return new_result

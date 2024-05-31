@@ -11,6 +11,7 @@ class MailLogClassInfo:
     :param id_self: внутренний id
     :param fields: Список полей
     :param src: настройки кластеризации хранения
+    :param id:  Храним значение идентефикатора id для типа ПРИБЫТИЕ
     """
 
     date: datetime.date = None
